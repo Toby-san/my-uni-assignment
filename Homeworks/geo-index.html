@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Distance to Kasem Bundit University</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+  body {
+    margin: 0;
+    padding: 3rem 1.5rem;
+    font-family: 'Roboto', sans-serif;
+    background-color: #556677; /* muted slate blue */
+    color: #f0f4f8; /* light text */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+
+  h1 {
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    z-index: 1;
+    text-align: center;
+    color: #f0f4f8;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  }
+
+  .buttons {
+    z-index: 1;
+  }
+
+  button {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 14px 32px;
+    margin: 0.5rem 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(39, 174, 96, 0.6);
+    transition: background-color 0.3s ease, box-shadow 0.25s ease;
+    min-width: 150px;
+  }
+
+  button:hover {
+    background-color: #219150;
+    box-shadow: 0 6px 14px rgba(33, 145, 80, 0.8);
+  }
+
+  button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.8);
+  }
+
+  #result {
+    margin-top: 2.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 1.8rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    font-size: 1.3rem;
+    max-width: 400px;
+    min-height: 3.5rem;
+    text-align: center;
+    z-index: 1;
+    user-select: none;
+    color: #e6f2ff;
+    font-weight: 600;
+    backdrop-filter: blur(6px);
+  }
+
+  @media (max-width: 480px) {
+  body {
+    padding: 1.5rem 1rem;
+  }
+  h1 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  button {
+    font-size: 0.95rem;
+    padding: 10px 18px;
+    width: 100%;
+    max-width: 240px;
+  }
+  #result {
+    font-size: 1rem;
+    padding: 1rem;
+    max-width: 95%;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: center;
+  }
+  button {
+    width: 90%;
+    max-width: 280px;
+    font-size: 1rem;
+    padding: 12px 20px;
+  }
+  #result {
+    font-size: 1.1rem;
+    max-width: 90%;
+    padding: 1.3rem;
+  }
+}
+</style>
+</head>
+<body>
+  <h1>Distance to Kasem Bundit University Romklao Campus</h1>
+
+  <div class="buttons">
+    <button id="locateBtn">Where am I?</button>
+    <button id="directionBtn" style="display:none;">Get Directions</button>
+  </div>
+
+  <div id="result">Click "Where am I?" to find your distance.</div>
+
+<script>
+  const uniLat = 13.80265;
+  const uniLng = 100.73699;
+
+  let userLat = null;
+  let userLng = null;
+
+  function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+  }
+
+  function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = deg2rad(lat2 - lat1);
+    const dLon = deg2rad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+
+  const locateBtn = document.getElementById('locateBtn');
+  const directionBtn = document.getElementById('directionBtn');
+  const resultDiv = document.getElementById('result');
+
+  locateBtn.addEventListener('click', () => {
+    if (navigator.geolocation) {
+      resultDiv.textContent = 'Locating… please allow location access.';
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          userLat = position.coords.latitude;
+          userLng = position.coords.longitude;
+          const distance = getDistanceFromLatLonInKm(userLat, userLng, uniLat, uniLng);
+          resultDiv.textContent = 
+            `You're ${distance.toFixed(2)} km away from Kasem Bundit University.`;
+          directionBtn.style.display = 'inline-block';
+        },
+        (error) => {
+          switch(error.code) {
+            case error.PERMISSION_DENIED:
+              resultDiv.textContent = "Permission denied. Please allow location access.";
+              break;
+            case error.POSITION_UNAVAILABLE:
+              resultDiv.textContent = "Location information is unavailable.";
+              break;
+            case error.TIMEOUT:
+              resultDiv.textContent = "The request to get your location timed out.";
+              break;
+            default:
+              resultDiv.textContent = "An unknown error occurred.";
+              break;
+          }
+          directionBtn.style.display = 'none';
+        }
+      );
+    } else {
+      resultDiv.textContent = "Geolocation is not supported by your browser.";
+      directionBtn.style.display = 'none';
+    }
+  });
+
+  directionBtn.addEventListener('click', () => {
+    if (userLat !== null && userLng !== null) {
+      const url = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${uniLat},${uniLng}&travelmode=driving`;
+      window.open(url, '_blank');
+    } else {
+      alert('User location unknown. Please click "Where am I?" first.');
+    }
+  });
+</script>
+</body>
+</html>
