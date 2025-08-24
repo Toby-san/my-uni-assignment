@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Assignments</title>
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #2b5876, #4e4376);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 600px;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+
+    .btn-group {
+      display: grid;
+      gap: 20px;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .btn {
+      display: block;
+      padding: 15px;
+      font-size: 1.2rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 12px;
+      background: #ffffff22;
+      color: white;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .btn:hover {
+      background: #ffffff55;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>My Web Assignments</h1>
+    <div class="btn-group">
+      <a href="./Homeworks/portfolio.html" class="btn" target="_blank">Resume</a>
+      <a href="./Homeworks/converter-index.html" class="btn" target="_blank" >Converter</a>
+      <a href="./Homeworks/grade-index.html" class="btn" target="_blank">Grading</a>
+      <a href="./Homeworks/calthechange-index.html" class="btn" target="_blank">Calculate the Change</a>
+      <a href="./Homeworks/geo-index.html" class="btn" target="_blank">Geolocation</a>
+    </div>
+  </div>
+</body>
+</html>
